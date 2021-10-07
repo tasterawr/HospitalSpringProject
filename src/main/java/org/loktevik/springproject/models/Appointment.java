@@ -1,8 +1,6 @@
 package org.loktevik.springproject.models;
 
 public class Appointment {
-    public enum Status{ APPEARED, NOT_APPEARED, SICK, HEALTHY }
-
     private Long id;
     private Registration registration;
     private String description;

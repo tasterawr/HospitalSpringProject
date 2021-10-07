@@ -1,10 +1,6 @@
 package org.loktevik.springproject.models;
 
 public class Doctor {
-    public enum Speciality{
-        THERAPIST, PSYCHIATRIST, DERMATOLOGIST, NEUROLOGIST,
-        GYNECOLOGIST, UROLOGIST, OPHTHALMOLOGIST
-    }
 
     private Long id;
     private String name;
