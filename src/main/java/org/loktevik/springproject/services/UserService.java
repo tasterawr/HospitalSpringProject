@@ -11,7 +11,7 @@ public interface UserService {
 
     void saveUser(User user);
 
-    void updateUser(User user);
+    void updateUser(User user, String type, String newValue);
 
     void deleteUser(long id);
 }

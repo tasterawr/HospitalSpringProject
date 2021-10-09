@@ -15,6 +15,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="org.loktevik.springproject" />
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
     <mvc:annotation-driven/>
 
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
@@ -35,12 +38,16 @@
 
     <util:list id="users" value-type="org.loktevik.springproject.models.User"/>
 
-    <bean id="testUserDaoImpl" class="org.loktevik.springproject.dao.impl.TestUserDAOImpl">
+    <bean id="userDao" class="org.loktevik.springproject.dao.impl.TestUserDAOImpl">
         <property name="testUsers" ref="users"/>
     </bean>
 
     <bean id="userService" class="org.loktevik.springproject.services.impl.UserServiceImpl">
-        <constructor-arg name="userDao" ref="testUserDaoImpl"/>
+        <constructor-arg name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="userController" class="org.loktevik.springproject.controllers.UserController">
+        <constructor-arg name="userService" ref="userService"/>
     </bean>
 
 </beans>

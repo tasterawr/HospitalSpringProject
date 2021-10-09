@@ -58,6 +58,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "ID: " + id + ", " + name;
+        return "ID: " + id + ", " + name + ", Login: " + login;
     }
 }
