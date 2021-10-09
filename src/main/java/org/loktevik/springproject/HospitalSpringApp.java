@@ -10,8 +10,8 @@ import java.util.List;
 
 public class HospitalSpringApp {
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        //ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        //ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         UserService service = (UserService) context.getBean("userService");
         User user = new User();

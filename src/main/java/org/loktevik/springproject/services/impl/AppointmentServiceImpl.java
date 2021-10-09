@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("appointmentService")
+//@Service("appointmentService")
 public class AppointmentServiceImpl implements AppointmentService{
     private AppointmentDAO appointmentDao;
 
