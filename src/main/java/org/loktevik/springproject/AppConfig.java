@@ -23,6 +23,7 @@ public class AppConfig {
     public UserService userService(){
         return new UserServiceImpl(userDAO());
     }
+
     @Bean
     public List<User> users(){
         return new ArrayList<User>();
