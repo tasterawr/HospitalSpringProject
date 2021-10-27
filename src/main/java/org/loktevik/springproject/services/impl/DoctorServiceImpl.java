@@ -1,32 +1,30 @@
 package org.loktevik.springproject.services.impl;
 
-import org.loktevik.springproject.dao.DoctorDAO;
+import org.loktevik.springproject.repository.DoctorRepository;
 import org.loktevik.springproject.models.Doctor;
 import org.loktevik.springproject.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//@Service("doctorService")
 public class DoctorServiceImpl implements DoctorService{
-    private DoctorDAO doctorDao;
+    private DoctorRepository doctorRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorDAO doctorDao){
-        this.doctorDao = doctorDao;
+    public DoctorServiceImpl(DoctorRepository doctorRepository){
+        this.doctorRepository = doctorRepository;
     }
 
     public Doctor getDoctor(long id){
-        return doctorDao.get(id);
+        return doctorRepository.getById(id);
     }
 
     public List<Doctor> getAllDoctors(){
-        return doctorDao.getAll();
+        return doctorRepository.findAll();
     }
 
     public void saveDoctor(Doctor doctor){
-        doctorDao.save(doctor);
+        doctorRepository.save(doctor);
     }
 
     public void updateDoctor(Doctor doctor){

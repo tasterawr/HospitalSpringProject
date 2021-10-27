@@ -1,13 +1,22 @@
 package org.loktevik.springproject.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "doctors")
 public class Doctor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String number;
     private String email;
     private String login;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private Speciality speciality;
 
     public Long getId() {

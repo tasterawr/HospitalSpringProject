@@ -1,10 +1,22 @@
 package org.loktevik.springproject.models;
 
+import javax.persistence.*;
 import java.sql.Date;
 
+@Entity
+@Table(name = "registration")
 public class Registration {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
     private Date date;
 

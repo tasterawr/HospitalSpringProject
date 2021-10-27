@@ -1,29 +1,32 @@
 package org.loktevik.springproject.services.impl;
 
-import org.loktevik.springproject.dao.UserDAO;
+import org.loktevik.springproject.repository.UserRepository;
 import org.loktevik.springproject.models.User;
 import org.loktevik.springproject.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//@Service("userService")
 public class UserServiceImpl implements UserService{
-    private UserDAO userDao;
 
-    public UserServiceImpl(UserDAO userDao){
-        this.userDao = userDao;
+    @Autowired
+    private UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     public User getUser(long id){
-        return userDao.get(id);
+        return userRepository.getById(id);
     }
 
     public List<User> getAllUsers(){
-        return userDao.getAll();
+        return userRepository.findAll();
     }
 
     public void saveUser(User user){
-        userDao.save(user);
+        userRepository.save(user);
     }
 
     public void updateUser(User user, String type, String newValue){
@@ -43,10 +46,10 @@ public class UserServiceImpl implements UserService{
             user.setPassword(newValue);
         }
 
-        userDao.update(user);
+        userRepository.update(user);
     }
 
     public void deleteUser(long id){
-        userDao.delete(id);
+        userRepository.delete(id);
     }
 }

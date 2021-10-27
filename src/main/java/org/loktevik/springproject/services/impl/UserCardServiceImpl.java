@@ -1,21 +1,19 @@
 package org.loktevik.springproject.services.impl;
 
-import org.loktevik.springproject.dao.UserCardDAO;
+import org.loktevik.springproject.repository.UserCardRepository;
 import org.loktevik.springproject.models.UserCard;
 import org.loktevik.springproject.services.UserCardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@Service("userCardService")
 public class UserCardServiceImpl implements UserCardService{
-    private UserCardDAO userCardDAO;
+    private UserCardRepository userCardRepository;
 
     @Autowired
-    public UserCardServiceImpl(UserCardDAO userCardDAO){
-        this.userCardDAO = userCardDAO;
+    public UserCardServiceImpl(UserCardRepository userCardRepository){
+        this.userCardRepository = userCardRepository;
     }
 
     public UserCard getUserCard(long id){
@@ -27,7 +25,7 @@ public class UserCardServiceImpl implements UserCardService{
     }
 
     public void saveUserCard(UserCard userCard){
-        userCardDAO.save(userCard);
+        userCardRepository.save(userCard);
     }
 
     public void updateUserCard(UserCard userCard){

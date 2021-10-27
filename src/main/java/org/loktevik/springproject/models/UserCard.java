@@ -1,17 +1,24 @@
 package org.loktevik.springproject.models;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "user_card")
 public class UserCard {
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
+
+    @OneToMany(mappedBy = "usercard")
     private List<Appointment> appointments;
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Appointment> getAppointments() {
