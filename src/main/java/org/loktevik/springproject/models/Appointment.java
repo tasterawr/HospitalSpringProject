@@ -4,7 +4,7 @@ package org.loktevik.springproject.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="appointments")
+@Table(name="appointment")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,8 +15,8 @@ public class Appointment {
     private Registration registration;
     private String description;
 
-    @ManyToOne
     @JoinColumn(name="user_card_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private UserCard userCard;
 
     @Enumerated(EnumType.STRING)
@@ -45,6 +45,14 @@ public class Appointment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public UserCard getUserCard() {
+        return userCard;
+    }
+
+    public void setUserCard(UserCard userCard) {
+        this.userCard = userCard;
     }
 
     public Status getStatus() {

@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserService{
             user.setPassword(newValue);
         }
 
-        userRepository.update(user);
+        userRepository.save(user);
     }
 
     public void deleteUser(long id){
-        userRepository.delete(id);
+        userRepository.deleteById(id);
     }
 }

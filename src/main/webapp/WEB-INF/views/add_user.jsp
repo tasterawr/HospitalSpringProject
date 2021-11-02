@@ -9,10 +9,6 @@
 <h1 color="red">Add user form</h1>
 <form action="add-user" method="post" >
 			<table>
-			    <tr>
-            	    <td>Id</td>
-            		    <td><input type="text" name="id" /></td>
-            	</tr>
 				<tr>
 					<td>Full user name</td>
 					<td><input type="text" name="name" /></td>

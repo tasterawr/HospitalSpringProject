@@ -3,7 +3,7 @@ package org.loktevik.springproject.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "doctors")
+@Table(name = "doctor")
 public class Doctor {
 
     @Id

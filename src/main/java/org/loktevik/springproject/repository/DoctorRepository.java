@@ -14,7 +14,5 @@ public interface DoctorRepository extends CrudRepository<Doctor, Long> {
 
     Doctor save(Doctor doctor);
 
-    void update(Doctor doctor);
-
-    void delete(long id);
+    void deleteById(long id);
 }

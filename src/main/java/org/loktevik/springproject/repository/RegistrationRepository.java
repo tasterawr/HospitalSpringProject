@@ -14,7 +14,5 @@ public interface RegistrationRepository extends CrudRepository<Registration, Lon
 
     Registration save(Registration registration);
 
-    void update(Registration registration);
-
-    void delete(long id);
+    void deleteById(long id);
 }

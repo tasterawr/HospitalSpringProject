@@ -14,7 +14,5 @@ public interface UserCardRepository extends CrudRepository<UserCard, Long> {
 
     UserCard save(UserCard userCard);
 
-    void update(UserCard userCard);
-
-    void delete(long id);
+    void deleteById(long id);
 }

@@ -1,16 +1,23 @@
 package org.loktevik.springproject.models;
 
+import org.springframework.context.annotation.Primary;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user_card")
+@Table(name = "userCard")
 public class UserCard {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "usercard")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCard")
     private List<Appointment> appointments;
 
     public User getUser() {

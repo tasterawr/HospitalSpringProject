@@ -10,11 +10,9 @@ import java.util.List;
 public interface AppointmentRepository extends CrudRepository<Appointment, Long> {
     Appointment getById(long id);
 
-    List<Appointment> getAll();
+    List<Appointment> findAll();
 
     Appointment save(Appointment appointment);
 
-    void update(Appointment appointment);
-
-    void delete(long id);
+    void deleteById(long id);
 }

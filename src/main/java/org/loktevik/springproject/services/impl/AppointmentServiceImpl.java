@@ -20,7 +20,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     public List<Appointment> getAllAppointments(){
-        return appointmentRepository.getAll();
+        return appointmentRepository.findAll();
     }
 
     public void saveAppointment(Appointment appointment){
