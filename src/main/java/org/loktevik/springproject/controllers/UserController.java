@@ -1,45 +1,55 @@
 package org.loktevik.springproject.controllers;
 
+import lombok.RequiredArgsConstructor;
+import org.loktevik.springproject.models.Login;
 import org.loktevik.springproject.models.User;
 import org.loktevik.springproject.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
 @RequestMapping("user")
+@Transactional
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService){ this.userService = userService;}
-
-    @GetMapping(value = "/add-user")
-    public ModelAndView addUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ModelAndView modelAndView = new ModelAndView("add_user");
+    @GetMapping("home")
+    public ModelAndView homePage(){
+        User user = userService.getUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+        ModelAndView modelAndView = new ModelAndView("user_home");
+        modelAndView.addObject("name", user.getName());
+        modelAndView.addObject("login", user.getLogin());
+        modelAndView.addObject("phone", user.getNumber());
+        modelAndView.addObject("email", user.getEmail());
         return modelAndView;
     }
 
+    @GetMapping(value = "/add-user")
+    public ModelAndView addUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return new ModelAndView("add_user");
+    }
+
     @GetMapping(value = "update-user")
-    public String updateUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        return "update_user";
+    public ModelAndView updateUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        return new ModelAndView("update_user");
     }
 
     @GetMapping(value = "delete-user")
-    public String deleteUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        return "delete_user";
+    public ModelAndView deleteUserPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        return new ModelAndView("delete_user");
     }
 
     @PostMapping(value = "/add-user")
-    public void addUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView addUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String name = request.getParameter("name");
         String number = request.getParameter("number");
         String email = request.getParameter("email");
@@ -47,33 +57,32 @@ public class UserController {
         String password = request.getParameter("password");
         addNewUser(name, number, email, login, password);
 
-        addUserPage(request, response);
+        return new ModelAndView("add_user");
     }
 
     @GetMapping(value = "/get-users")
-    public void getUsersRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView getUsersRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         List<User> users = userService.getAllUsers();
-        PrintWriter out = response.getWriter();
-        for (User u : users){
-            out.write(u.toString() + "<br>");
-        }
+
+        ModelAndView modelAndView = new ModelAndView("get_all_users");
+        modelAndView.addObject("users", users);
+        return modelAndView;
     }
 
     @PostMapping(value = "/update-user")
-    public void updateUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("id");
+    public ModelAndView updateUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String type = request.getParameter("parameter");
         String newValue = request.getParameter("newValue");
-        updateUser(id, type, newValue);
+        updateUser(type, newValue);
 
-        updateUserPage(request, response);
+        return new ModelAndView("update_user");
     }
 
     @PostMapping(value = "/delete-user")
-    public void deleteUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("id");
-        deleteUser(id);
+    public String deleteUserRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        userService.deleteUserByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "redirect:/logout";
     }
 
     private void addNewUser(String name, String number, String email, String login, String password){
@@ -81,18 +90,13 @@ public class UserController {
         user.setName(name);
         user.setNumber(number);
         user.setEmail(email);
-        user.setLogin(login);
+        user.setLogin(new Login(0, login, null, null));
         user.setPassword(password);
 
         userService.saveUser(user);
     }
 
-    private void updateUser(String id, String parameter, String newValue){
-        User user = userService.getUser(Long.parseLong(id));
-        userService.updateUser(user, parameter, newValue);
-    }
-
-    private void deleteUser(String id){
-        userService.deleteUser(Long.parseLong(id));
+    private void updateUser(String parameter, String newValue){
+        userService.updateUser(SecurityContextHolder.getContext().getAuthentication().getName(), parameter, newValue);
     }
 }

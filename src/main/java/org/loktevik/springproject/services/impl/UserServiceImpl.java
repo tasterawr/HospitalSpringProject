@@ -1,23 +1,29 @@
 package org.loktevik.springproject.services.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.loktevik.springproject.repository.UserRepository;
 import org.loktevik.springproject.models.User;
 import org.loktevik.springproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
+    @SneakyThrows
+    public User getUserByLogin(String login){
+        return userRepository.findUserByLoginLogin(login).orElseThrow(Exception::new);
     }
 
-    public User getUser(long id){
+    @Override
+    public User getUser(long id) {
         return userRepository.getById(id);
     }
 
@@ -26,10 +32,14 @@ public class UserServiceImpl implements UserService{
     }
 
     public void saveUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
-    public void updateUser(User user, String type, String newValue){
+    @SneakyThrows
+    public void updateUser(String login, String type, String newValue){
+        User user = userRepository.findUserByLoginLogin(login).orElseThrow(Exception::new);
+
         if (type.equals("name")){
             user.setName(newValue);
         }
@@ -39,17 +49,16 @@ public class UserServiceImpl implements UserService{
         else if (type.equals("email")){
             user.setEmail(newValue);
         }
-        else if (type.equals("login")){
-            user.setLogin(newValue);
-        }
         else if (type.equals("password")){
-            user.setPassword(newValue);
+            user.setPassword(passwordEncoder.encode(newValue));
         }
 
         userRepository.save(user);
     }
 
-    public void deleteUser(long id){
-        userRepository.deleteById(id);
+    @SneakyThrows
+    public void deleteUserByLogin(String login){
+        User user = userRepository.findUserByLoginLogin(login).orElseThrow(Exception::new);
+        userRepository.deleteById(user.getId());
     }
 }
